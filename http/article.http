@@ -1,0 +1,22 @@
+### get all articles
+GET http://localhost:8080/articles
+Content-Type: application/json
+Accept: application/json
+
+### get article by id
+GET http://localhost:8080/articles/1
+Content-Type: application/json
+Accept: application/json
+
+### save an article
+POST http://localhost:8080/articles
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 1,
+  "title": "Article title 1",
+  "text": "Article text and bla ble bli",
+  "publicationDate": "2022-01-02",
+  "createAt": "2022-01-01T10:15:30"
+}
