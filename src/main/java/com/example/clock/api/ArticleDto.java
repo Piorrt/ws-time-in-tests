@@ -1,19 +1,31 @@
 package com.example.clock.api;
 
-import lombok.AllArgsConstructor;
+import com.example.clock.domain.Article;
+import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
-@AllArgsConstructor
+@Builder
 @Getter
 public class ArticleDto {
 
     private Long id;
     private String title;
     private String text;
-    private LocalDate publicationDate;
-    private LocalDateTime createAt;
+    private Instant publicationDate;
+    private Instant expireDate;
+    private Instant createAt;
+
+    public static ArticleDto from(Article article) {
+        return ArticleDto.builder()
+            .id(article.getId())
+            .title(article.getTitle())
+            .text(article.getText())
+            .publicationDate(article.getPublicationDate())
+            .expireDate(article.getExpireDate())
+            .createAt(article.getCreateAt())
+            .build();
+    }
 
 }

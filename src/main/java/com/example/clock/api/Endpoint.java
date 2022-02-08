@@ -1,41 +1,43 @@
 package com.example.clock.api;
 
+import com.example.clock.domain.Article;
+import com.example.clock.domain.ArticleService;
+import com.example.clock.domain.SaveArticle;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/articles")
 public class Endpoint {
+
+    private final ArticleService articleService;
 
     @GetMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<List<ArticleDto>> getAllArticle() {
-        List<ArticleDto> articles = new ArrayList<>();
-        articles.add(
-            new ArticleDto(
-                1L, "Article title 1", "Article text and bla ble bli",
-                LocalDate.parse("2022-01-02"), LocalDateTime.parse("2022-01-01T10:15:30")
-            )
-        );
-        articles.add(
-            new ArticleDto(
-                2L, "Article title 2", "Article text and bla ble bli",
-                LocalDate.parse("2022-01-10"), LocalDateTime.parse("2022-01-01T10:15:30")
-            )
-        );
-        return ResponseEntity.ok(articles);
+    public ResponseEntity<ArticlesResponse> getAllArticle() {
+        List<ArticleDto> articles = articleService.findAllArticles().stream()
+            .map(article -> ArticleDto.from(article))
+            .collect(Collectors.toList());
+
+        ArticlesResponse response = ArticlesResponse.builder()
+            .articles(articles)
+            .build();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(
@@ -44,35 +46,29 @@ public class Endpoint {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ArticleDto> getArticle(
-        @PathVariable(name = "id") Integer id
+        @PathVariable(name = "id") Long id
     ) {
-        List<ArticleDto> articles = new ArrayList<>();
-        articles.add(
-            new ArticleDto(
-                1L, "Article title 1", "Article text and bla ble bli",
-                LocalDate.parse("2022-01-02"), LocalDateTime.parse("2022-01-01T10:15:30")
-            )
-        );
-        articles.add(
-            new ArticleDto(
-                2L, "Article title 2", "Article text and bla ble bli",
-                LocalDate.parse("2022-01-10"), LocalDateTime.parse("2022-01-02T10:15:30")
-            )
-        );
-
-        ArticleDto found = articles.stream()
-            .filter(articleDto -> articleDto.getId() == id.longValue())
-            .findFirst()
-            .orElseGet(null);
-
-        return ResponseEntity.ok(found);
+        Optional<Article> found = articleService.findById(id);
+        if (found.isPresent()) {
+            Article article = found.get();
+            return ResponseEntity.ok(ArticleDto.from(article));
+        }
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ArticleDto> saveArticle(ArticleDto dto) {
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<ArticleDto> saveArticle(@RequestBody SaveArticleRequest dto) {
+        SaveArticle toSave = new SaveArticle(
+            dto.getTitle(),
+            dto.getText(),
+            dto.getPublicationDate(),
+            dto.getEndOfVisibility()
+        );
+        Article saved = articleService.save(toSave);
+
+        return ResponseEntity.ok(ArticleDto.from(saved));
     }
 }
