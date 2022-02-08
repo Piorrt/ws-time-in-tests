@@ -14,9 +14,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "id": 1,
   "title": "Article title 1",
-  "text": "Article text and bla ble bli",
-  "publicationDate": "2022-01-02",
-  "createAt": "2022-01-01T10:15:30"
+  "text": "Article text and bla ble",
+  "publicationDate": "2022-02-02"
 }
