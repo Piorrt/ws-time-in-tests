@@ -3,7 +3,7 @@ package com.example.clock.config;
 import com.example.clock.domain.ArticleRepository;
 import com.example.clock.domain.ArticleService;
 import com.example.clock.external.ArticleStorageAdapter;
-import com.example.clock.external.JpaArticleRepository;
+import com.example.clock.external.storage.JpaArticleRepository;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

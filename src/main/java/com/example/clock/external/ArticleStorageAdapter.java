@@ -1,9 +1,10 @@
 package com.example.clock.external;
 
-import com.example.clock.domain.Article;
+import com.example.clock.domain.model.Article;
 import com.example.clock.domain.ArticleRepository;
+import com.example.clock.external.storage.ArticleEntity;
+import com.example.clock.external.storage.JpaArticleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;

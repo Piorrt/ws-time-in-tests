@@ -1,4 +1,4 @@
-package com.example.clock.domain;
+package com.example.clock.domain.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

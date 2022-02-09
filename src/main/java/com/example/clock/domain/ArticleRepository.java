@@ -1,5 +1,7 @@
 package com.example.clock.domain;
 
+import com.example.clock.domain.model.Article;
+
 import java.util.List;
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
-package com.example.clock.api;
+package com.example.clock.api.model;
 
-import com.example.clock.domain.Article;
+import com.example.clock.domain.model.Article;
 import lombok.Builder;
 import lombok.Getter;
 
