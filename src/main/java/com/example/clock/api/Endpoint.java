@@ -1,8 +1,11 @@
 package com.example.clock.api;
 
-import com.example.clock.domain.Article;
+import com.example.clock.api.model.ArticleDto;
+import com.example.clock.api.model.ArticlesResponse;
+import com.example.clock.api.model.SaveArticleRequest;
+import com.example.clock.domain.model.Article;
 import com.example.clock.domain.ArticleService;
-import com.example.clock.domain.SaveArticle;
+import com.example.clock.domain.model.SaveArticle;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

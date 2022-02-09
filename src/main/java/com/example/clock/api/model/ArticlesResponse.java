@@ -1,4 +1,4 @@
-package com.example.clock.api;
+package com.example.clock.api.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

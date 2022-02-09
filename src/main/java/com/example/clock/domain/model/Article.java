@@ -1,4 +1,4 @@
-package com.example.clock.domain;
+package com.example.clock.domain.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,4 @@ public class Article {
     private Instant expireDate;
     private Instant createAt;
 
-    public boolean isVisible() {
-        return expireDate.isAfter(Instant.now());
-    }
 }

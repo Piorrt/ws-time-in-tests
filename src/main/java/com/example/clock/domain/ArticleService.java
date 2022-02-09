@@ -1,5 +1,7 @@
 package com.example.clock.domain;
 
+import com.example.clock.domain.model.Article;
+import com.example.clock.domain.model.SaveArticle;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -16,7 +18,7 @@ public class ArticleService {
 
     public List<Article> findAllArticles() {
         return repository.getAllArticle().stream()
-            .filter(article -> article.isVisible())
+            .filter(article -> isArticleVisible(article))
             .collect(Collectors.toList());
     }
 
@@ -34,5 +36,12 @@ public class ArticleService {
             .build();
 
         return repository.save(toSave);
+    }
+
+    private boolean isArticleVisible(Article article) {
+        Instant currentTime = Instant.now();
+        return article.getExpireDate()
+            .isAfter(currentTime) &&
+            article.getPublicationDate().isBefore(currentTime);
     }
 }

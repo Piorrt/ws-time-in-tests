@@ -1,6 +1,6 @@
-package com.example.clock.external;
+package com.example.clock.external.storage;
 
-import com.example.clock.domain.Article;
+import com.example.clock.domain.model.Article;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
