@@ -2,7 +2,6 @@ package com.example.clock.domain;
 
 import com.example.clock.domain.model.Article;
 import com.example.clock.domain.model.SaveArticle;
-import com.example.clock.domain.time.TimeProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -16,7 +15,13 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository repository;
-    private final TimeProvider timeProvider;
+
+    //TODO 1 Dodaj interface TimeProvider w package - domain.time
+    //     - metoda getInstantNow zwraca Instant
+
+    //TODO 2 Dodaj impemantacja TimeProvider -> RealTimeProvider w package - external.time
+
+    //TODO 3 Użyj TimeProvider w serwisie
 
     public List<Article> findAllArticles() {
         return repository.getAllArticle().stream()
@@ -34,14 +39,14 @@ public class ArticleService {
             .text(request.getText())
             .publicationDate(request.getPublicationDate())
             .expireDate(request.getEndOfVisibility())
-            .createAt(timeProvider.getInstantNow())
+            .createAt(Instant.now())
             .build();
 
         return repository.save(toSave);
     }
 
     private boolean isArticleVisible(Article article) {
-        Instant currentTime = timeProvider.getInstantNow();
+        Instant currentTime = Instant.now();
         return article.getExpireDate()
             .isAfter(currentTime) &&
             article.getPublicationDate().isBefore(currentTime);

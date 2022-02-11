@@ -2,7 +2,6 @@ package com.example.clock.config;
 
 import com.example.clock.domain.ArticleRepository;
 import com.example.clock.domain.ArticleService;
-import com.example.clock.domain.time.TimeProvider;
 import com.example.clock.external.ArticleStorageAdapter;
 import com.example.clock.external.storage.JpaArticleRepository;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,9 +19,8 @@ public class DomainConfiguration {
 
     @Bean
     public ArticleService articleService(
-        ArticleRepository repository,
-        TimeProvider timeProvider
+        ArticleRepository repository
     ) {
-        return new ArticleService(repository, timeProvider);
+        return new ArticleService(repository);
     }
 }

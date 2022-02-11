@@ -1,6 +1,5 @@
 package com.example.clock;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(
@@ -9,8 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 )
 public class BaseIT {
 
-    @Autowired
-    protected MockTimeProvider timeProvider;
+    //TODO 4 Dodaj implementację TimeProvider -> MockTimeProvider
+
+    //TODO 5 Dodaj MockTimeProvider do BaseIT
 
     protected String localUrl(String endpoint) {
         return "http://localhost:8080" + endpoint;

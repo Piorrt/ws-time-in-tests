@@ -26,6 +26,8 @@ public class EndpointIT extends BaseIT {
     @Autowired
     ArticleStorageAdapter storage;
 
+    //TODO 6 Użyj MockTimeProvider i popraw testy
+
     @Test
     public void should_return_article() {
         //given
@@ -67,7 +69,6 @@ public class EndpointIT extends BaseIT {
         storage.save(savedArticle);
 
         //when article is not publish - should not return article before publish date
-        timeProvider.set("2019-12-27T00:00:00Z");
         ResponseEntity<ArticlesResponse> responseBeforePublish = callGetAllArticle();
 
         //then
@@ -77,7 +78,6 @@ public class EndpointIT extends BaseIT {
         Assertions.assertEquals(0, bodyBeforePublish.getArticles().size());
 
         //when after published and before expire date
-        timeProvider.set("2020-01-08T00:00:00Z");
         ResponseEntity<ArticlesResponse> responseAfterPublish = callGetAllArticle();
 
         //then
@@ -94,7 +94,6 @@ public class EndpointIT extends BaseIT {
         Assertions.assertEquals(savedArticle.getCreateAt(), article.getCreateAt());
 
         //when article is expired - should not return article when article was expire
-        timeProvider.plusDays(15);
         ResponseEntity<ArticlesResponse> responseAfterExpire = callGetAllArticle();
 
         //then
@@ -107,8 +106,6 @@ public class EndpointIT extends BaseIT {
     @Test
     public void should_save_article() {
         //given
-        timeProvider.set("2019-12-15T00:00:00Z");
-        var now = timeProvider.getInstantNow();
         SaveArticleRequest toSave = SaveArticleRequest.builder()
             .title("Article 1")
             .text("Article text")
@@ -127,7 +124,7 @@ public class EndpointIT extends BaseIT {
         Assertions.assertEquals(toSave.getText(), body.getText());
         Assertions.assertEquals(toSave.getPublicationDate(), body.getPublicationDate());
         Assertions.assertEquals(toSave.getEndOfVisibility(), body.getExpireDate());
-        Assertions.assertEquals(now, body.getCreateAt());
+        Assertions.assertEquals(Instant.now(), body.getCreateAt());
     }
 
     private ResponseEntity<ArticleDto> callGetArticle(Long articleId) {
