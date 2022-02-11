@@ -8,8 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Clock;
-
 @Configuration
 @ConfigurationProperties("domain.properties")
 public class DomainConfiguration {
@@ -21,14 +19,11 @@ public class DomainConfiguration {
 
     @Bean
     public ArticleService articleService(
-        ArticleRepository repository,
-        Clock clock
+        ArticleRepository repository
     ) {
-        return new ArticleService(repository, clock);
+        return new ArticleService(repository);
     }
 
-    @Bean
-    public Clock clock() {
-        return Clock.systemUTC();
-    }
+    //TODO - 1. dodaj definicję bean-a clock.
+    // Clock jest interface z pakietu java.time
 }

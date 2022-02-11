@@ -5,7 +5,6 @@ import com.example.clock.domain.model.SaveArticle;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
-import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,9 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository repository;
-    private final Clock clock;
+
+    //TODO - 2. dodaj wcześniej zdefiniowany bean clock do serwisu
+    //TODO - 3. użyj clock przy zapisie i odczycie wszystkich artykułów
 
     public List<Article> findAllArticles() {
         return repository.getAllArticle().stream()
@@ -34,14 +35,14 @@ public class ArticleService {
             .text(request.getText())
             .publicationDate(request.getPublicationDate())
             .expireDate(request.getEndOfVisibility())
-            .createAt(clock.instant())
+            .createAt(Instant.now())
             .build();
 
         return repository.save(toSave);
     }
 
     private boolean isArticleVisible(Article article) {
-        Instant currentTime = clock.instant();
+        Instant currentTime = Instant.now();
         return article.getExpireDate()
             .isAfter(currentTime) &&
             article.getPublicationDate().isBefore(currentTime);
