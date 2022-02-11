@@ -5,6 +5,7 @@ import com.example.clock.domain.model.SaveArticle;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository repository;
+    private final Clock clock;
 
     public List<Article> findAllArticles() {
         return repository.getAllArticle().stream()
@@ -32,14 +34,14 @@ public class ArticleService {
             .text(request.getText())
             .publicationDate(request.getPublicationDate())
             .expireDate(request.getEndOfVisibility())
-            .createAt(Instant.now())
+            .createAt(clock.instant())
             .build();
 
         return repository.save(toSave);
     }
 
     private boolean isArticleVisible(Article article) {
-        Instant currentTime = Instant.now();
+        Instant currentTime = clock.instant();
         return article.getExpireDate()
             .isAfter(currentTime) &&
             article.getPublicationDate().isBefore(currentTime);
